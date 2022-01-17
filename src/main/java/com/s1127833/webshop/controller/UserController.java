@@ -1,15 +1,12 @@
 package com.s1127833.webshop.controller;
 
-import com.s1127833.webshop.model.User;
+import com.s1127833.webshop.model.UserAccount;
 import com.s1127833.webshop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @RestController
-@RequestMapping("/userController")
+@RequestMapping("/user")
 public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     private UserService userService;
@@ -18,9 +15,14 @@ public class UserController {
         bCryptPasswordEncoder = encoder;
         this.userService = userService;
     }
+    @PostMapping
+    public UserAccount createUser(@RequestBody UserAccount UserAccount){
+        UserAccount.setPassword(bCryptPasswordEncoder.encode(UserAccount.getPassword()));
+        return userService.createUser(UserAccount);
+    }
 
-    public User createUser(@RequestBody User User){
-        User.setPassword(bCryptPasswordEncoder.encode(User.getPassword()));
-        return userService.createUser(User);
+    @GetMapping
+    public String createUser(){
+        return "hah";
     }
 }

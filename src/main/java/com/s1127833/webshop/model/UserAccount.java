@@ -3,7 +3,7 @@ package com.s1127833.webshop.model;
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class UserAccount {
 
     @Id
     @GeneratedValue

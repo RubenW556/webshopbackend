@@ -1,9 +1,8 @@
 package com.s1127833.webshop.service;
 
-import com.s1127833.webshop.model.User;
+import com.s1127833.webshop.model.UserAccount;
 import com.s1127833.webshop.repository.UserRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
@@ -13,9 +12,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
- public User createUser(User user){
+ public UserAccount createUser(UserAccount userAccount){
 
-     userRepository.save(user);
-     return user;
+     userRepository.save(userAccount);
+     return userAccount;
  }
 }
