@@ -10,7 +10,7 @@ public class Item {
     private long id;
 
     private String itemName;
-    private Byte[] image;
+    private String image;
     private float price;
 
     public long getId() {
@@ -29,11 +29,11 @@ public class Item {
         this.itemName = itemName;
     }
 
-    public Byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

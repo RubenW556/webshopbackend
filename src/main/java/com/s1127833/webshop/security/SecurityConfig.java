@@ -2,6 +2,7 @@ package com.s1127833.webshop.security;
 
 import com.s1127833.webshop.filter.JWTAuthenticationFilter;
 import com.s1127833.webshop.filter.JWTAuthorizationFilter;
+import com.s1127833.webshop.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -20,10 +20,10 @@ import static com.s1127833.webshop.filter.SecurityConstants.SIGN_UP_URL;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsService userDetailsService;
+    private UserService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public SecurityConfig(UserDetailsService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public SecurityConfig(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDetailsService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -32,8 +32,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
-                .antMatchers(HttpMethod.GET, "/hello").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET, "/login").permitAll()
+                .antMatchers("/hello").hasAnyAuthority("OWNER")
+                .antMatchers(HttpMethod.GET ,"/item/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/item").permitAll()
+                .antMatchers("/item/**").hasAnyAuthority("OWNER")
+                .antMatchers("/item").hasAnyAuthority("OWNER")
+                .antMatchers("/user/**").hasAnyAuthority("OWNER")
+                .antMatchers("/user").hasAnyAuthority("OWNER")
                 .and()
                 .csrf()
                 .disable()
