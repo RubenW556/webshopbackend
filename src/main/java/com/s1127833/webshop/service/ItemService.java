@@ -4,6 +4,8 @@ import com.s1127833.webshop.model.Item;
 import com.s1127833.webshop.repository.ItemRepository;
 import org.springframework.stereotype.Service;
 
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -14,13 +16,12 @@ public class ItemService {
     public ItemService (ItemRepository itemRepository){
         this.itemRepository = itemRepository;
     }
-
+    @Transactional
     public List<Item> getAllItems(){
         return itemRepository.findAll();
     }
-    public Item getItemByID(int id){
-        return itemRepository.getById(id);
-    }
+
+    public Item getItemByID(Long id){ return itemRepository.findById(id).get(); }
 
     public void saveItem(Item item){
         itemRepository.save(item);

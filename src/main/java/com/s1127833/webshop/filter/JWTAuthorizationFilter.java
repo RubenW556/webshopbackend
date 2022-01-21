@@ -36,22 +36,35 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        UsernamePasswordAuthenticationToken authentication = getAuthentication(req,res );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
 
     // Reads the JWT from the Authorization header, and then uses JWT to validate the token
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, HttpServletResponse res) {
         String token = request.getHeader(HEADER_STRING);
 
         if (token != null) {
             // parse the token.
-            String user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
-                    .build()
-                    .verify(token.replace(TOKEN_PREFIX, ""))
-                    .getSubject();
+            String user = null;
+            try {
+                user = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
+                        .build()
+                        .verify(token.replace(TOKEN_PREFIX, ""))
+                        .getSubject();
+            }catch (com.auth0.jwt.exceptions.TokenExpiredException e) {
+                final String expiredMsg = e.getMessage();
+                logger.warn(expiredMsg);
+
+                final String msg = (expiredMsg != null) ? expiredMsg : "Unauthorized";
+                try {
+                    res.sendError(HttpServletResponse.SC_UNAUTHORIZED, msg);
+                }catch(Exception i){
+                    logger.warn(i);
+                }
+            }
 
             if (user != null) {
 

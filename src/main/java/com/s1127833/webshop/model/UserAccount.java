@@ -88,7 +88,6 @@ public class UserAccount implements UserDetails {
     @Override
     public ArrayList<? extends GrantedAuthority> getAuthorities() {
         ArrayList<Authorities> list = new ArrayList<>();
-        System.out.println(authorities.getAuthority());
         list.add(authorities);
         return  list;
     }

@@ -61,7 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
-        String body = ((UserAccount) auth.getPrincipal()).getUsername() + " " + token;
+        String body = token;
 
         res.getWriter().write(body);
         res.getWriter().flush();

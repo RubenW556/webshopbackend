@@ -24,12 +24,12 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public Item getItem(@PathVariable("id") int itemId){
+    public Item getItem(@PathVariable("id") Long itemId){
         return itemService.getItemByID(itemId);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> getAllItems(@PathVariable("id") int itemId,@RequestBody Item item){
+    public ResponseEntity<String> updateItem(@PathVariable("id") Long itemId,@RequestBody Item item){
         Item temp = itemService.getItemByID(itemId);
         temp.setImage(item.getImage());
         temp.setItemName(item.getItemName());
@@ -39,10 +39,10 @@ public class ItemController {
         return new ResponseEntity<>("created user account", HttpStatus.CREATED );
     }
     @PostMapping
-    public ResponseEntity<String> getAllItems(@RequestBody Item item){
+    public ResponseEntity<String> saveItem(@RequestBody Item item){
         itemService.saveItem(item);
 
-        return new ResponseEntity<>("created user account", HttpStatus.CREATED );
+        return new ResponseEntity<>("created item", HttpStatus.CREATED );
     }
 
 }

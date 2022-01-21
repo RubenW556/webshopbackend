@@ -1,6 +1,13 @@
 package com.s1127833.webshop.model;
 
+
+
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+
 
 @Entity(name= "item")
 public class Item {
@@ -10,6 +17,8 @@ public class Item {
     private long id;
 
     private String itemName;
+
+    @Column(length=10485760)
     private String image;
     private float price;
 
