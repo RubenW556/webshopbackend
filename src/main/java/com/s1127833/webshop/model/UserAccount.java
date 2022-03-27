@@ -1,12 +1,20 @@
 package com.s1127833.webshop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.s1127833.webshop.enums.Role;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 
+@Getter
+@Setter
+@ToString
 @Entity
 public class UserAccount implements UserDetails {
 
@@ -20,28 +28,20 @@ public class UserAccount implements UserDetails {
     @Column(unique=true)
     private String username;
     private String password;
-    private Authorities authorities = new Authorities();
+    private Role role = Role.ROLE_CUSTOMER;
 
-
-    public long getId() {
-        return id;
+    @JsonIgnore
+    @Override
+    public ArrayList<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.name()));
+        return authorities;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public boolean hasRole(Role role){
+        return role.equals(Role.ROLE_OWNER);
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
@@ -61,47 +61,5 @@ public class UserAccount implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return authorities.getAuthority();
-    }
-
-    public void setRole(String role) {
-
-        this.authorities.setAuthority(role);
-    }
-
-    @JsonIgnore
-    @Override
-    public ArrayList<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<Authorities> list = new ArrayList<>();
-        list.add(authorities);
-        return  list;
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "UserAccount{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + authorities.getAuthority() +
-                '}';
     }
 }

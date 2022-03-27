@@ -1,5 +1,6 @@
 package com.s1127833.webshop;
 
+import com.s1127833.webshop.enums.Role;
 import com.s1127833.webshop.model.UserAccount;
 import com.s1127833.webshop.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,7 +22,7 @@ public class initializer {
             UserAccount user = new UserAccount();
             user.setEmail("e-mail");
             user.setPassword(bCryptPasswordEncoder.encode("admin"));
-            user.setRole("OWNER");
+            user.setRole(Role.ROLE_OWNER);
             user.setUsername("admin");
             this.userService.createUser(user);
         }

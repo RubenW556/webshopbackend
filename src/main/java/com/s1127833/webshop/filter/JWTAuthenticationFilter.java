@@ -23,7 +23,7 @@ import static com.s1127833.webshop.filter.SecurityConstants.EXPIRATION_TIME;
 import static com.s1127833.webshop.filter.SecurityConstants.SECRET;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -61,9 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withClaim("roles", user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
                 .sign(Algorithm.HMAC512(SECRET.getBytes()));
 
-        String body = token;
-
-        res.getWriter().write(body);
+        res.getWriter().write(token);
         res.getWriter().flush();
     }
 

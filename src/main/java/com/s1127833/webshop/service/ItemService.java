@@ -11,19 +11,32 @@ import java.util.List;
 @Service
 public class ItemService {
 
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+    private final SanitizationService sanitizationService;
 
-    public ItemService (ItemRepository itemRepository){
+    public ItemService (ItemRepository itemRepository, SanitizationService sanitizationService){
         this.itemRepository = itemRepository;
+        this.sanitizationService = sanitizationService;
     }
+
     @Transactional
     public List<Item> getAllItems(){
         return itemRepository.findAll();
     }
 
-    public Item getItemByID(Long id){ return itemRepository.findById(id).get(); }
+    public Item getItemByID(Long id){ return itemRepository.findById(id).get();}
 
     public void saveItem(Item item){
+        item.setItemName(sanitizationService.Sanitize(item.getItemName()));
+
         itemRepository.save(item);
+    }
+
+    public void updateItem(Item item, long itemID){
+        Item temp = itemRepository.getById(itemID);
+        temp.setImage(item.getImage());
+        temp.setItemName(item.getItemName());
+        temp.setPrice(item.getPrice());
+        saveItem(temp);
     }
 }

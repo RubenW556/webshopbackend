@@ -1,8 +1,8 @@
-package com.s1127833.webshop.model;
+package com.s1127833.webshop.enums;
 
 public enum Role {
-    CUSTOMER(0),
-    OWNER(1);
+    ROLE_CUSTOMER(0),
+    ROLE_OWNER(1);
 
     private final int value;
 

@@ -30,22 +30,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().authorizeRequests()
+        http.cors();
+        http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.GET, "/login").permitAll()
-                .antMatchers("/hello").hasAnyAuthority("OWNER")
                 .antMatchers(HttpMethod.GET ,"/item/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/item").permitAll()
-                .antMatchers("/item/**").hasAnyAuthority("OWNER")
-                .antMatchers("/item").hasAnyAuthority("OWNER")
-                .antMatchers("/user/**").hasAnyAuthority("OWNER")
-                .antMatchers("/user").hasAnyAuthority("OWNER")
-                .antMatchers("/order/**").hasAnyAuthority("OWNER")
-                .antMatchers("/order").hasAnyAuthority("OWNER")
-                .antMatchers(HttpMethod.POST,"/order").permitAll()
-                .and()
-                .csrf()
-                .disable()
+                .anyRequest().authenticated();
+        http.csrf().disable()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
