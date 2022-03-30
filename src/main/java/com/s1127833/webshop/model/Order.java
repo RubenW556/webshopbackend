@@ -8,6 +8,8 @@ import com.s1127833.webshop.enums.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity(name= "itemOrder")
@@ -15,16 +17,16 @@ public class Order {
 
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
 
-    @ManyToOne
-    private Item[] items;
+    @ElementCollection
+    private List<Long> items;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     @JsonManagedReference
     private Payment payment;
 
-    private long userId;
+    private String username;
     private int price;
     private OrderStatus orderstatus = OrderStatus.PROCESSED;
 }

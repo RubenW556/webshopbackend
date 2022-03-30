@@ -32,7 +32,7 @@ public class ItemController {
     public ResponseEntity<String> updateItem(@PathVariable("id") Long itemId,@RequestBody Item item){
         itemService.updateItem(item, itemId);
 
-        return new ResponseEntity<>("created user account", HttpStatus.CREATED );
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Secured("ROLE_OWNER")
@@ -40,7 +40,7 @@ public class ItemController {
     public ResponseEntity<String> saveItem(@RequestBody Item item){
         itemService.saveItem(item);
 
-        return new ResponseEntity<>("created item", HttpStatus.CREATED );
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

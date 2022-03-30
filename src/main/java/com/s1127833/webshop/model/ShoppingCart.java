@@ -3,6 +3,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -12,35 +15,21 @@ public class ShoppingCart {
     @GeneratedValue
     private int id;
 
-    @ManyToOne
-    private Item[] items;
+    @ElementCollection
+    private List<Long> items;
 
-    private long userId;
+    private String userName;
 
-    public void addItem(Item newItem){
-        int n = items.length+1;
-
-        Item[] newItems = new Item[n];
-        for (int i = 0; i < n; i++)
-            newItems[i] = items[i];
-
-        newItems[n] = newItem;
-
-        items = newItems;
+    public void addItem(Long newItem){
+        this.items.add(newItem);
     }
 
     public void removeItem(Item removeItem){
-        int n = items.length-1;
-
-        Item[] newItems = new Item[n];
+        int n = items.size();
         for (int i = 0; i < n; i++) {
-            int j = 0;
-            if (items[i].equals(removeItem)) {
-                j = 1;
+            if (items.get(i).equals(removeItem)) {
+                items.remove(i-1);
             }
-            newItems[i] = items[i + j];
         }
-
-        items = newItems;
     }
 }

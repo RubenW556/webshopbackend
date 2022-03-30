@@ -18,6 +18,6 @@ public class UserController {
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody UserAccount userDetails){
         userService.createUser(userDetails);
-        return new ResponseEntity<>("created user account", HttpStatus.CREATED );
+        return new ResponseEntity<>(HttpStatus.CREATED );
     }
 }

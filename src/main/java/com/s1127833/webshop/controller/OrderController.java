@@ -22,11 +22,10 @@ public class OrderController {
 
     @PostMapping
     @Secured({"ROLE_CUSTOMER"})
-    public ResponseEntity<String> saveOrder(@RequestBody Order order){
+    public ResponseEntity<String> saveOrder(){
+        orderService.putOrder();
 
-        orderService.putOrder(order);
-
-        return new ResponseEntity<>("created order", HttpStatus.CREATED );
+        return new ResponseEntity<>(HttpStatus.CREATED );
     }
 
     @Secured({"ROLE_OWNER"})
@@ -48,14 +47,15 @@ public class OrderController {
     public ResponseEntity<String> deleteOrder(@PathVariable long id){
         orderService.deleteOrder(id);
 
-        return new ResponseEntity<>("deleted order", HttpStatus.OK );
+        return new ResponseEntity<>(HttpStatus.OK );
     }
 
     @Secured({"ROLE_OWNER"})
-    @PutMapping ("/{id}")
-    public ResponseEntity<String> updateOrder(@PathVariable long id, @RequestBody OrderStatus orderStatus){
-        orderService.updateOrder(id, orderStatus);
+    @PostMapping ("/{id}")
+    public ResponseEntity<String> updateOrder(@PathVariable Integer id, @RequestParam OrderStatus orderStatus){
+        long newId = id.longValue();
+        orderService.updateOrder(newId, orderStatus);
 
-        return new ResponseEntity<>("deleted order", HttpStatus.OK );
+        return new ResponseEntity<>(HttpStatus.OK );
     }
 }

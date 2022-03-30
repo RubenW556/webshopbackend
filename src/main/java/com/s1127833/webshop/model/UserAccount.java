@@ -39,7 +39,7 @@ public class UserAccount implements UserDetails {
     }
 
     public boolean hasRole(Role role){
-        return role.equals(Role.ROLE_OWNER);
+        return this.role.equals(role);
     }
 
     @JsonIgnore
