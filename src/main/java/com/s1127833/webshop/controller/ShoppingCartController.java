@@ -48,4 +48,12 @@ public class ShoppingCartController {
         return shoppingCartService.getItems();
     }
 
+    @PostMapping("/override")
+    @Secured({"ROLE_CUSTOMER"})
+    public ResponseEntity<String> saveOrder(@RequestBody List<Long> items){
+        shoppingCartService.override(items);
+
+        return new ResponseEntity<>(HttpStatus.CREATED );
+    }
+
 }

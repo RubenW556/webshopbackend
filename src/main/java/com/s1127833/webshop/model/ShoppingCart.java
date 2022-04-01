@@ -13,7 +13,7 @@ import java.util.List;
 public class ShoppingCart {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
 
     @ElementCollection
     private List<Long> items;

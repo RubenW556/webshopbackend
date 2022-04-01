@@ -1,7 +1,6 @@
 package com.s1127833.webshop.service;
 
 import com.s1127833.webshop.enums.OrderStatus;
-import com.s1127833.webshop.model.Item;
 import com.s1127833.webshop.model.Order;
 import com.s1127833.webshop.model.Payment;
 import com.s1127833.webshop.model.ShoppingCart;
@@ -38,8 +37,7 @@ public class OrderService {
         order.setUsername((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         orderRepository.save(order);
-
-        System.out.println(orderRepository.findAll().get(0).getItems().get(0));
+        shoppingCartService.emptyCart();
     }
 
     public Order getOrder(long id){

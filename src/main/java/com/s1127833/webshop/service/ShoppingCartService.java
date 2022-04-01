@@ -2,10 +2,8 @@ package com.s1127833.webshop.service;
 
 import com.s1127833.webshop.model.ShoppingCart;
 import com.s1127833.webshop.repository.ShoppingCartRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +19,17 @@ public class ShoppingCartService {
         this.shoppingCartRepository = shoppingCartRepository;
         this.itemService = itemService;
         this.userService = userService;
+    }
+
+    public void override(List<Long> newOrders){
+        ShoppingCart shoppingCart = getCurrentUserShoppingCart();
+        if(shoppingCart ==null){
+            shoppingCart = new ShoppingCart();
+            shoppingCart.setUserName((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        }
+        shoppingCart.setItems(newOrders);
+        shoppingCartRepository.save(shoppingCart);
+
     }
 
     public void addItem(Long itemId){
@@ -51,9 +60,8 @@ public class ShoppingCartService {
         return getCurrentUserShoppingCart().getItems();
     }
 
-    public List<Long> emptyCart(){
-
-        return getCurrentUserShoppingCart().getItems();
+    public void emptyCart(){
+        shoppingCartRepository.delete(getCurrentUserShoppingCart());
     }
 
     public ShoppingCart getCurrentUserShoppingCart(){
