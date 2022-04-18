@@ -18,4 +18,6 @@ public class Item {
     @Column(length=10485760)
     private String image;
     private float price;
+
+    private boolean deleted = false;
 }

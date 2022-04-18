@@ -21,7 +21,7 @@ public class ItemService {
 
     @Transactional
     public List<Item> getAllItems(){
-        return itemRepository.findAll();
+        return itemRepository.findByDeletedFalse();
     }
 
     public Item getItemByID(Long id){ return itemRepository.findById(id).get();}
@@ -33,7 +33,9 @@ public class ItemService {
     }
 
     public void deleteItem(long itemId){
-        itemRepository.deleteById(itemId);
+        Item item  = itemRepository.getById(itemId);
+        item.setDeleted(true);
+        itemRepository.save(item);
     }
 
     public void updateItem(Item item, long itemID){
