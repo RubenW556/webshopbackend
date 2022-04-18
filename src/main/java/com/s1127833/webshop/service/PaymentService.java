@@ -8,9 +8,11 @@ import java.util.List;
 @Service
 public class PaymentService {
     ShoppingCartService shoppingCartService;
+    ItemService itemService;
 
     PaymentService (ShoppingCartService shoppingCartService, ItemService itemService){
         this.shoppingCartService = shoppingCartService;
+        this.itemService = itemService;
     }
 
     public Payment createAndGetPayment(){
@@ -20,7 +22,7 @@ public class PaymentService {
 
         int price = 0;
         for(int i =0; i<shoppingCart.size(); i++){
-            price += shoppingCart.get(i);
+            price += this.itemService.getItemByID(shoppingCart.get(i)).getPrice();
         }
         payment.setPrice(price);
 

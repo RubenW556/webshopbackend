@@ -32,6 +32,10 @@ public class ItemService {
         itemRepository.save(item);
     }
 
+    public void deleteItem(long itemId){
+        itemRepository.deleteById(itemId);
+    }
+
     public void updateItem(Item item, long itemID){
         Item temp = itemRepository.getById(itemID);
         temp.setImage(item.getImage());

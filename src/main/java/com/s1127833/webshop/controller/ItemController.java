@@ -36,6 +36,14 @@ public class ItemController {
     }
 
     @Secured("ROLE_OWNER")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable("id") Long itemId){
+        itemService.deleteItem(itemId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Secured("ROLE_OWNER")
     @PostMapping
     public ResponseEntity<String> saveItem(@RequestBody Item item){
         itemService.saveItem(item);
